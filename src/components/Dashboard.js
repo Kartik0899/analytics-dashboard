@@ -17,7 +17,6 @@ const Dashboard = () => {
     const user = useSelector((state) => state.auth.user);
     // const userEmail = useSelector((state) => state.auth.email);
 
-    // console.log('user ->',userEmail);
     const startDate = useSelector((state) => state.analytics.startDate);
     const endDate = useSelector((state) => state.analytics.endDate);
     // const loading = useSelector((state) => state.analytics.loading);
@@ -25,6 +24,8 @@ const Dashboard = () => {
     const tableData = useSelector((state) => state.charts.tableData);
     const barData = useSelector((state) => state.charts.barData);
     const pieData = useSelector((state) => state.charts.pieData);
+    const chartLoading = useSelector((state) => state.charts.chartLoading);
+    // console.log('chartLoading ->', chartLoading);
 
     const [showTable, setShowTable] = useState(false);
 
@@ -53,7 +54,6 @@ const Dashboard = () => {
     const [selectedStartDate, setSelectedStartDate] = useState(null);
     const [selectedEndDate, setSelectedEndDate] = useState(null);
     // console.log('selectedStartDate', selectedStartDate, 'sdfsdf', selectedEndDate);
-    // const [loading, setLoading] = useState(false);
 
     const handleDateRangeChange = (value) => {
         if (value) {
@@ -73,9 +73,7 @@ const Dashboard = () => {
         dispatch(getBarData())
         dispatch(getPieData())
 
-        // setLoading(true);
         setShowTable(true);
-        // setLoading(false);
     };
 
     const BarChartlabels = barData?.data.map((item) => item.appSiteId);
@@ -209,23 +207,25 @@ const Dashboard = () => {
                     )}
 
                     {/* Need to work on the charts showing when there is no date selected */}
-                    {/* {
-                        loading ? (
-                            <div role="status" className="max-w-sm animate-pulse">
+                    {
+                        chartLoading ? (
+                            <div role="status" className="animate-pulse">
                                 <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4"></div>
                                 <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4"></div>
-
+                                <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4"></div>
+                                <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4"></div>
                             </div>
-                        ) : ( */}
-                    {showTable && tableData && (
-                        <>
-                            <div>
-                                <TableComponent data={tableData.data} />
-                                <BarChart data={BarChartData} options={chartOptions} />
-                                <PieChart data={PieChartData} options={PieChartOptions} />
-                            </div>
-                        </>
-                    )
+                        ) : (
+                            showTable && tableData && (
+                                <>
+                                    <div>
+                                        <TableComponent data={tableData.data} />
+                                        <BarChart data={BarChartData} options={chartOptions} />
+                                        <PieChart data={PieChartData} options={PieChartOptions} />
+                                    </div>
+                                </>
+                            )
+                        )
                     }
 
 

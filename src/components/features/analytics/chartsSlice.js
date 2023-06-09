@@ -190,46 +190,46 @@ const chartsSlice = createSlice({
         tableData: null,
         barData: null,
         pieData: null,
-        loading: false,
+        chartLoading: false,
         error: null,
     },
     reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(getTableData.pending, (state) => {
-                state.loading = true;
+                state.chartLoading = true;
                 state.error = null;
             })
             .addCase(getTableData.fulfilled, (state, action) => {
-                state.loading = false;
+                state.chartLoading = false;
                 state.tableData = action.payload;
             })
             .addCase(getTableData.rejected, (state, action) => {
-                state.loading = false;
+                state.chartLoading = false;
                 state.error = action.payload;
             })
             .addCase(getBarData.pending, (state) => {
-                state.loading = true;
+                state.chartLoading = true;
                 state.error = null;
             })
             .addCase(getBarData.fulfilled, (state, action) => {
-                state.loading = false;
+                state.chartLoading = false;
                 state.barData = action.payload;
             })
             .addCase(getBarData.rejected, (state, action) => {
-                state.loading = false;
+                state.chartLoading = false;
                 state.error = action.payload;
             })
             .addCase(getPieData.pending, (state) => {
-                state.loading = true;
+                state.chartLoading = true;
                 state.error = null;
             })
             .addCase(getPieData.fulfilled, (state, action) => {
-                state.loading = false;
+                state.chartLoading = false;
                 state.pieData = action.payload;
             })
             .addCase(getPieData.rejected, (state, action) => {
-                state.loading = false;
+                state.chartLoading = false;
                 state.error = action.payload;
             })
     },
