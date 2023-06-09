@@ -16,22 +16,22 @@ const authSlice = createSlice({
       state.error = null;
     },
     signInSuccess: (state, action) => {
-      // console.log('signInSuccess',action.payload.token);
+      // console.log('signInSuccess',action.payload);
       state.isLoading = false;
-      state.user = action.payload
+      state.user = action.payload;
       state.token = action.payload.token;
     },
     signInFailure: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     },
-    signOut: (state) => {
+    signOutSuccess: (state) => {
       state.user = null;
     },
   },
 });
 
-export const { signInStart, signInSuccess, signInFailure, signOut } = authSlice.actions;
+export const { signInStart, signInSuccess, signInFailure, signOutSuccess } = authSlice.actions;
 
 export const signIn = (payload) => async (dispatch) => {
   try {
@@ -42,5 +42,15 @@ export const signIn = (payload) => async (dispatch) => {
     dispatch(signInFailure(error.message));
   }
 };
+
+export const signOut = () => (dispatch) => {
+  // Perform sign out logic (e.g., clear user session, remove tokens, etc.)
+  // ...
+
+  // Dispatch the signOutSuccess action to reset the user state
+  dispatch(signOutSuccess());
+};
+
+
 
 export default authSlice.reducer;
