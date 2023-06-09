@@ -10,13 +10,17 @@ import { fetchChartsData } from './features/analytics/analyticsActions';
 import { getDateRange } from './features/analytics/analyticsSlice';
 import { getBarData, getPieData, getTableData } from './features/analytics/chartsSlice';
 import { getAuthToken } from './features/auth/authAPI';
-import { signIn } from './features/auth/authSlice';
+import { signIn, signOutSuccess } from './features/auth/authSlice';
+import Navbar from './Navbar/Navbar';
 
 const Dashboard = () => {
     const user = useSelector((state) => state.auth.user);
+    // const userEmail = useSelector((state) => state.auth.email);
+
+    // console.log('user ->',userEmail);
     const startDate = useSelector((state) => state.analytics.startDate);
     const endDate = useSelector((state) => state.analytics.endDate);
-    const loading = useSelector((state) => state.analytics.loading);
+    // const loading = useSelector((state) => state.analytics.loading);
 
     const tableData = useSelector((state) => state.charts.tableData);
     const barData = useSelector((state) => state.charts.barData);
@@ -28,7 +32,7 @@ const Dashboard = () => {
 
     const dispatch = useDispatch();
 
-    console.log('tableData', tableData, 'barData', barData, 'pieData', pieData);
+    // console.log('tableData', tableData, 'barData', barData, 'pieData', pieData);
 
 
     useEffect(() => {
@@ -49,6 +53,7 @@ const Dashboard = () => {
     const [selectedStartDate, setSelectedStartDate] = useState(null);
     const [selectedEndDate, setSelectedEndDate] = useState(null);
     // console.log('selectedStartDate', selectedStartDate, 'sdfsdf', selectedEndDate);
+    // const [loading, setLoading] = useState(false);
 
     const handleDateRangeChange = (value) => {
         if (value) {
@@ -68,7 +73,9 @@ const Dashboard = () => {
         dispatch(getBarData())
         dispatch(getPieData())
 
+        // setLoading(true);
         setShowTable(true);
+        // setLoading(false);
     };
 
     const BarChartlabels = barData?.data.map((item) => item.appSiteId);
@@ -95,7 +102,7 @@ const Dashboard = () => {
             },
             title: {
                 display: true,
-                text: 'Chart.js Line Chart',
+                // text: 'Bar Chart',
             },
         },
     };
@@ -134,7 +141,7 @@ const Dashboard = () => {
             },
             title: {
                 display: true,
-                text: 'Pie Chart',
+                // text: 'Pie Chart',
             },
         },
     };
@@ -142,34 +149,40 @@ const Dashboard = () => {
 
     return (
         <div>
-            <h2>Welcome, {user.username}!</h2>
-            {startDate && endDate ? (
-                <>
-                    <div>
-                        <p>Start date: {formatEpochDate(startDate)}</p>
-                        <p>End date: {formatEpochDate(endDate)}</p>
-                    </div>
+            <Navbar />
+            <section className="bg-gray-50 dark:bg-gray-900 h-full">
+                <div className="flex flex-col px-6 py-8 mx-auto lg:py-0">
+                    <h2 className='text-white my-[3%] flex justify-center'>Welcome to the Dashboard {user.username}!</h2>
+                    {startDate && endDate ? (
+                        <>
+                            <div className='flex items-center mb-[2%] text-white text-xl'>
+                                <div className='mr-4'>Start date: {formatEpochDate(startDate)}</div>
+                                <div>End date: {formatEpochDate(endDate)}</div>
+                            </div>
 
-                    <DateRangePickerComponent
-                        startDate={startDate}
-                        endDate={endDate}
-                        selectedStartDate={selectedStartDate}
-                        selectedEndDate={selectedEndDate}
-                        onDateRangeChange={handleDateRangeChange}
-                    />
-                    {/* <DateRangePicker
+                            <div className='w-[20%] grid mb-[2%]'>
+                                <DateRangePickerComponent
+                                    startDate={startDate}
+                                    endDate={endDate}
+                                    selectedStartDate={selectedStartDate}
+                                    selectedEndDate={selectedEndDate}
+                                    onDateRangeChange={handleDateRangeChange}
+                                />
+                            </div>
+                            {/* <DateRangePicker
                         startDate={selectedStartDate}
                         endDate={selectedEndDate}
                         onDateRangeChange={handleDateRangeChange}
                     /> */}
 
 
-                    <p>Selected start date: {selectedStartDate ? formatEpochDate(selectedStartDate) : 'None'}</p>
-                    <p>Selected end date: {selectedEndDate ? formatEpochDate(selectedEndDate) : 'None'}</p>
+                            <div className='flex items-center mb-[2%] text-white text-xl'>
+                                <div className='mr-4'>Selected start date: {selectedStartDate ? formatEpochDate(selectedStartDate) : 'None'}</div>
+                                <div>Selected end date: {selectedEndDate ? formatEpochDate(selectedEndDate) : 'None'}</div>
+                            </div>
 
 
-
-                    {/* <CustomDatePicker
+                            {/* <CustomDatePicker
                         startDate={startDate}
                         endDate={endDate}
                         // handleDateChange={handleDateRangeChange}
@@ -179,23 +192,52 @@ const Dashboard = () => {
                         handleEndDateChange={setSelectedEndDate}
                         onDateRangeChange={handleDateRangeChange}
                     /> */}
-                    {selectedStartDate !== null && selectedEndDate !== null && (
-                        <button onClick={handleViewDashboard}>VIEW DASHBOARD</button>
-                    )}
-                </>
-            ) : (
-                <p>Loading date range...</p>
-            )}
-            {/* Add your other dashboard components and visualizations here */}
+                            {selectedStartDate !== null && selectedEndDate !== null && (
+                                <>
+                                    {/* <button onClick={handleViewDashboard}>VIEW DASHBOARD</button> */}
+                                    <button type="button" onClick={handleViewDashboard} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 w-[15%]">VIEW DASHBOARD</button>
+                                </>
+                            )}
+                        </>
+                    ) : (
 
-            {/* Need to work on the charts showing when there is no date selected */}
-            {showTable && tableData && (
-                <>
-                    <TableComponent data={tableData.data} />
-                    <BarChart data={BarChartData} options={chartOptions} />
-                    <PieChart data={PieChartData} options={PieChartOptions} />
-                </>
-            )}
+                        <div role="status" className="max-w-sm animate-pulse">
+                            <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4"></div>
+                            <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4"></div>
+                        </div>
+
+                    )}
+
+                    {/* Need to work on the charts showing when there is no date selected */}
+                    {/* {
+                        loading ? (
+                            <div role="status" className="max-w-sm animate-pulse">
+                                <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4"></div>
+                                <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4"></div>
+
+                            </div>
+                        ) : ( */}
+                    {showTable && tableData && (
+                        <>
+                            <div>
+                                <TableComponent data={tableData.data} />
+                                <BarChart data={BarChartData} options={chartOptions} />
+                                <PieChart data={PieChartData} options={PieChartOptions} />
+                            </div>
+                        </>
+                    )
+                    }
+
+
+                    {/* {showTable && tableData && (
+                        <>
+                            <TableComponent data={tableData.data} />
+                            <BarChart data={BarChartData} options={chartOptions} />
+                            <PieChart data={PieChartData} options={PieChartOptions} />
+                        </>
+                    )} */}
+                </div>
+            </section>
         </div>
     );
 };

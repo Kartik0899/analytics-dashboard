@@ -13,7 +13,7 @@ export const getDateRangeAPI = async (payload, authToken) => {
     }
 
     const data = await response.json();
-    // console.log('getDateRangeAPI', data.result);
+    console.log('getDateRangeAPI', data.result);
     return data.result;
 };
 
