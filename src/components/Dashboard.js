@@ -3,38 +3,28 @@ import { useSelector, useDispatch } from 'react-redux';
 import BarChart from './Charts/BarChart';
 import PieChart from './Charts/PieChart';
 import TableComponent from './Charts/table';
-import CustomDatePicker from './DatePicker/DatePicker';
 import DateRangePickerComponent from './DatePicker/DateRangePicker';
-import DateRangePicker from './DatePicker/DateRangePicker';
-import { fetchChartsData } from './features/analytics/analyticsActions';
 import { getDateRange } from './features/analytics/analyticsSlice';
 import { getBarData, getPieData, getTableData } from './features/analytics/chartsSlice';
-import { getAuthToken } from './features/auth/authAPI';
-import { signIn, signOutSuccess } from './features/auth/authSlice';
 import Navbar from './Navbar/Navbar';
 
 const Dashboard = () => {
-    const user = useSelector((state) => state.auth.user);
-    // const userEmail = useSelector((state) => state.auth.email);
 
     const startDate = useSelector((state) => state.analytics.startDate);
     const endDate = useSelector((state) => state.analytics.endDate);
-    // const loading = useSelector((state) => state.analytics.loading);
 
     const tableData = useSelector((state) => state.charts.tableData);
     const barData = useSelector((state) => state.charts.barData);
     const pieData = useSelector((state) => state.charts.pieData);
-    const chartLoading = useSelector((state) => state.charts.chartLoading);
-    // console.log('chartLoading ->', chartLoading);
+    const tableLoading = useSelector((state) => state.charts.tableLoading);
+    const barLoading = useSelector((state) => state.charts.barLoading);
+    const pieLoading = useSelector((state) => state.charts.pieLoading);
+    const tableerror = useSelector((state) => state.charts.tableerror);
+    const barerror = useSelector((state) => state.charts.barerror);
+    const pieerror = useSelector((state) => state.charts.pieerror);
 
     const [showTable, setShowTable] = useState(false);
-
-
-
     const dispatch = useDispatch();
-
-    // console.log('tableData', tableData, 'barData', barData, 'pieData', pieData);
-
 
     useEffect(() => {
         dispatch(getDateRange());
@@ -53,7 +43,6 @@ const Dashboard = () => {
 
     const [selectedStartDate, setSelectedStartDate] = useState(null);
     const [selectedEndDate, setSelectedEndDate] = useState(null);
-    // console.log('selectedStartDate', selectedStartDate, 'sdfsdf', selectedEndDate);
 
     const handleDateRangeChange = (value) => {
         if (value) {
@@ -67,12 +56,20 @@ const Dashboard = () => {
         // setSelectedEndDate(value[1]);
     };
 
+    useEffect(() => {
+        if (selectedStartDate !== null && selectedEndDate !== null) {
+            dispatch(getTableData());
+            dispatch(getBarData());
+            dispatch(getPieData());
+        }
+    }, [selectedStartDate, selectedEndDate, dispatch]);
+
+
+
     const handleViewDashboard = () => {
-        console.log('button clicked');
         dispatch(getTableData())
         dispatch(getBarData())
         dispatch(getPieData())
-
         setShowTable(true);
     };
 
@@ -105,9 +102,7 @@ const Dashboard = () => {
         },
     };
 
-    // const PieChartlabels = pieData?.data.slice(0, 10).map((item) => item.advertiserId);
-    // const PieChartvalues = pieData?.data.slice(0, 10).map((item) => parseInt(item.CM001));
-    const PieChartlabels = pieData?.data.map((item) => item.advertiserId);
+    const PieChartlabels = pieData?.data.slice(0, 10).map((item) => item.advertiserId);
 
     const PieChartvalues = pieData?.data.map((item) => parseInt(item.CM001));
 
@@ -145,12 +140,79 @@ const Dashboard = () => {
     };
 
 
+    const TableChartComponent = () => {
+        if (tableLoading) {
+            return (
+                <>
+                    <div role="status" className="animate-pulse">
+                        <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4">
+                        </div>
+                        <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4">
+                        </div>
+                        <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4">
+                        </div>
+                    </div>
+                </>
+            )
+        } else if (tableData !== null) {
+            return <TableComponent data={tableData.data} />
+        }
+        else if (tableerror !== null) {
+            return <div>something went wrong in Table Data</div>
+        }
+        else {
+            return <div>table</div>
+        }
+    }
+    const BarChartComponent = () => {
+        if (barLoading) {
+            return (
+                <>
+                    <div role="status" className="animate-pulse">
+                        <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4">
+                        </div>
+                    </div>
+                </>
+            )
+        } else if (barData !== null) {
+            return <BarChart data={BarChartData} options={chartOptions} />
+        }
+        else if (barerror !== null) {
+            return <div>something went wrong Bar Chart</div>
+        }
+        else {
+            return <div>Bar</div>
+        }
+    }
+    const PieChartComponent = () => {
+        if (pieLoading) {
+            return (
+                <>
+                    <div role="status" className="animate-pulse">
+                        <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4">
+                        </div>
+                    </div>
+                </>
+            )
+        } else if (pieData !== null) {
+            return <PieChart data={PieChartData} options={PieChartOptions} />
+        }
+        else if (pieerror !== null) {
+            return <div>something went wrong in Pie Chart</div>
+        }
+        else {
+            return <div>Pie</div>
+        }
+    }
+
+
+
     return (
         <div>
             <Navbar />
             <section className="bg-gray-50 dark:bg-gray-900 h-full">
                 <div className="flex flex-col px-6 py-8 mx-auto lg:py-0">
-                    <h2 className='text-white my-[3%] flex justify-center'>Welcome to the Dashboard {user.username}!</h2>
+                    <h2 className='text-white my-[3%] flex justify-center'>Welcome to the Dashboard !</h2>
                     {startDate && endDate ? (
                         <>
                             <div className='flex items-center mb-[2%] text-white text-xl'>
@@ -159,6 +221,7 @@ const Dashboard = () => {
                             </div>
 
                             <div className='w-[20%] grid mb-[2%]'>
+                            <div className='text-white mb-1'>Please select the date -</div>
                                 <DateRangePickerComponent
                                     startDate={startDate}
                                     endDate={endDate}
@@ -167,75 +230,40 @@ const Dashboard = () => {
                                     onDateRangeChange={handleDateRangeChange}
                                 />
                             </div>
-                            {/* <DateRangePicker
-                        startDate={selectedStartDate}
-                        endDate={selectedEndDate}
-                        onDateRangeChange={handleDateRangeChange}
-                    /> */}
-
 
                             <div className='flex items-center mb-[2%] text-white text-xl'>
                                 <div className='mr-4'>Selected start date: {selectedStartDate ? formatEpochDate(selectedStartDate) : 'None'}</div>
                                 <div>Selected end date: {selectedEndDate ? formatEpochDate(selectedEndDate) : 'None'}</div>
                             </div>
 
-
-                            {/* <CustomDatePicker
-                        startDate={startDate}
-                        endDate={endDate}
-                        // handleDateChange={handleDateRangeChange}
-                        selectedStartDate={selectedStartDate}
-                        selectedEndDate={selectedEndDate}
-                        handleStartDateChange={setSelectedStartDate}
-                        handleEndDateChange={setSelectedEndDate}
-                        onDateRangeChange={handleDateRangeChange}
-                    /> */}
                             {selectedStartDate !== null && selectedEndDate !== null && (
                                 <>
-                                    {/* <button onClick={handleViewDashboard}>VIEW DASHBOARD</button> */}
-                                    <button type="button" onClick={handleViewDashboard} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 w-[15%]">VIEW DASHBOARD</button>
+                                    <button type="button" onClick={handleViewDashboard} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 w-[15%]">VIEW DASHBOARD</button>
                                 </>
                             )}
                         </>
                     ) : (
-
                         <div role="status" className="max-w-sm animate-pulse">
                             <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4"></div>
                             <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4"></div>
                         </div>
-
                     )}
 
-                    {/* Need to work on the charts showing when there is no date selected */}
                     {
-                        chartLoading ? (
-                            <div role="status" className="animate-pulse">
-                                <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4"></div>
-                                <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4"></div>
-                                <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4"></div>
-                                <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4"></div>
-                            </div>
-                        ) : (
-                            showTable && tableData && (
-                                <>
-                                    <div>
-                                        <TableComponent data={tableData.data} />
-                                        <BarChart data={BarChartData} options={chartOptions} />
-                                        <PieChart data={PieChartData} options={PieChartOptions} />
-                                    </div>
-                                </>
-                            )
+                        selectedStartDate !== null && selectedEndDate !== null && (
+                            <>
+                                {showTable ? (
+                                    <>
+                                        <div><TableChartComponent /></div>
+                                        <div className='flex w-full mt-10'>
+                                            <BarChartComponent />
+                                            <PieChartComponent />
+                                        </div>
+                                    </>
+                                ) : (null)}
+                            </>
                         )
                     }
-
-
-                    {/* {showTable && tableData && (
-                        <>
-                            <TableComponent data={tableData.data} />
-                            <BarChart data={BarChartData} options={chartOptions} />
-                            <PieChart data={PieChartData} options={PieChartOptions} />
-                        </>
-                    )} */}
                 </div>
             </section>
         </div>
