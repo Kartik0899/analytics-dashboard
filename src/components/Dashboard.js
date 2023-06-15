@@ -152,7 +152,7 @@ const Dashboard = () => {
             return <TableComponent data={tableData.data} />
         }
         else if (tableerror !== null) {
-            return <div>something went wrong in Table Data</div>
+            return <div className='p-4'>something went wrong in Table Data</div>
         }
         else {
             return <div>table</div>
@@ -172,7 +172,7 @@ const Dashboard = () => {
             return <BarChart data={BarChartData} options={chartOptions} />
         }
         else if (barerror !== null) {
-            return <div>something went wrong Bar Chart</div>
+            return <div className='p-4'>something went wrong Bar Chart</div>
         }
         else {
             return <div>Bar</div>
@@ -192,7 +192,7 @@ const Dashboard = () => {
             return <PieChart data={PieChartData} options={PieChartOptions} />
         }
         else if (pieerror !== null) {
-            return <div>something went wrong in Pie Chart</div>
+            return <div className='p-4'>something went wrong in Pie Chart</div>
         }
         else {
             return <div>Pie</div>
