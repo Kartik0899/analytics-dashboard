@@ -16,16 +16,3 @@ export const getDateRangeAPI = async (payload, authToken) => {
     console.log('getDateRangeAPI', data.result);
     return data.result;
 };
-
-// Simulated API request
-// export const getDateRangeAPI = () => {
-//     return new Promise((resolve, reject) => {
-//       setTimeout(() => {
-//         resolve({
-//           startDate: 1583020800000,
-//           endDate: 1585699200000,
-//         });
-//       }, 1000); // Simulate asynchronous behavior
-//     });
-//   };
-  

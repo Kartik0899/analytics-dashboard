@@ -23,35 +23,15 @@ const SignIn = () => {
             rememberMe,
         };
 
-        // dispatch(signIn(signInPayload));
-
         try {
             const response = await dispatch(signIn(signInPayload));
-            // Handle successful sign-in
-            // Show success toast or redirect to another page
-            toast.success('Welcome');// Show error toast
+            toast.success('Welcome');
         } catch (error) {
-            // Handle sign-in error
-            // if (error.message === 'Failed to sign in') {
                 toast.error('Wrong credentials. Please try again.');
-            // } else {
-                // toast.error('Sign-in failed. Please try again.');
-            // }
         }
     };
-
-    // const dispatch = useDispatch();
-    // const [credentials, setCredentials] = useState({ username: '', password: '' });
-
-    // const handleInputChange = (e) => {
-    //     setCredentials({ ...credentials, [e.target.name]: e.target.value });
-    // };
-
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     dispatch(signIn(credentials));
-    //     setCredentials({ username: '', password: '' });
-    // };
+    // email: 'candidate@sigmoid.com',
+    // password: 'Sigmoid#123'
 
     return (
         <div>
@@ -100,27 +80,6 @@ const SignIn = () => {
                 position="bottom-right"
                 autoClose={2000}
             />
-            {/* <h2>Sign In  email: 'candidate@sigmoid.com',
-                password: 'Sigmoid#123',</h2>
-            <form onSubmit={handleSignIn}>
-                <div>
-                    <label>Email:</label>
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                </div>
-                <div>
-                    <label>Remember Me:</label>
-                    <input
-                        type="checkbox"
-                        checked={rememberMe}
-                        onChange={(e) => setRememberMe(e.target.checked)}
-                    />
-                </div>
-                <button type="submit">Sign In</button>
-            </form> */}
         </div>
     );
 };
