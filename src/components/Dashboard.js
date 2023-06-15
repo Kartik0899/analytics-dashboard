@@ -33,11 +33,7 @@ const Dashboard = () => {
 
 
     const formatEpochDate = (epoch) => {
-        // const date = new Date(epoch / 1000);
-        // return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-
         const date = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(epoch);
-        // console.log('dateStr', date);
         return date;
     };
 
@@ -52,8 +48,6 @@ const Dashboard = () => {
             setSelectedStartDate(null);
             setSelectedEndDate(null);
         }
-        // setSelectedStartDate(value[0]);
-        // setSelectedEndDate(value[1]);
     };
 
     useEffect(() => {
@@ -208,9 +202,9 @@ const Dashboard = () => {
 
 
     return (
-        <div>
+        <div className='bg-gray-900 min-h-screen'>
             <Navbar />
-            <section className="bg-gray-50 dark:bg-gray-900 h-full">
+            <section className="h-full">
                 <div className="flex flex-col px-6 py-8 mx-auto lg:py-0">
                     <h2 className='text-white my-[3%] flex justify-center'>Welcome to the Dashboard !</h2>
                     {startDate && endDate ? (
