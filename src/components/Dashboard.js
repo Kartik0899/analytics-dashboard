@@ -245,10 +245,8 @@ const Dashboard = () => {
                                 {showTable ? (
                                     <>
                                         <TableChartComponent />
-                                        // <div className='flex w-full mt-10'>
-                                            <BarChartComponent />
-                                            <PieChartComponent />
-                                        // </div>
+                                        <BarChartComponent />
+                                        <PieChartComponent />
                                     </>
                                 ) : (null)}
                             </>
