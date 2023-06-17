@@ -141,10 +141,6 @@ const Dashboard = () => {
                     <div role="status" className="animate-pulse">
                         <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4">
                         </div>
-                        <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4">
-                        </div>
-                        <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4">
-                        </div>
                     </div>
                 </>
             )
@@ -248,11 +244,11 @@ const Dashboard = () => {
                             <>
                                 {showTable ? (
                                     <>
-                                        <div><TableChartComponent /></div>
-                                        <div className='flex w-full mt-10'>
+                                        <TableChartComponent />
+                                        // <div className='flex w-full mt-10'>
                                             <BarChartComponent />
                                             <PieChartComponent />
-                                        </div>
+                                        // </div>
                                     </>
                                 ) : (null)}
                             </>
