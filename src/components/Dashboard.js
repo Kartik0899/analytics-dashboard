@@ -139,7 +139,7 @@ const Dashboard = () => {
             return (
                 <>
                     <div role="status" className="animate-pulse">
-                        <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4">
+                        <div className="h-20 rounded-lg bg-gray-700 w-full mb-4">
                         </div>
                     </div>
                 </>
@@ -159,7 +159,7 @@ const Dashboard = () => {
             return (
                 <>
                     <div role="status" className="animate-pulse">
-                        <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4">
+                        <div className="h-20 rounded-lg bg-gray-700 w-full mb-4">
                         </div>
                     </div>
                 </>
@@ -179,7 +179,7 @@ const Dashboard = () => {
             return (
                 <>
                     <div role="status" className="animate-pulse">
-                        <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4">
+                         <div className="h-20 rounded-lg bg-gray-700 w-full mb-4">
                         </div>
                     </div>
                 </>
@@ -227,15 +227,15 @@ const Dashboard = () => {
                             </div>
 
                             {selectedStartDate !== null && selectedEndDate !== null && (
-                                <>
-                                    <button type="button" onClick={handleViewDashboard} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 w-[15%]">VIEW DASHBOARD</button>
+                                 <>
+                                    <button type="button" onClick={handleViewDashboard} className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-5 w-[15%]">VIEW DASHBOARD</button>
                                 </>
                             )}
                         </>
                     ) : (
                         <div role="status" className="max-w-sm animate-pulse">
-                            <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4"></div>
-                            <div className="h-20 bg-gray-200 rounded-lg dark:bg-gray-700 w-full mb-4"></div>
+                            <div className="h-20 rounded-lg bg-gray-700 w-full mb-4"></div>
+                            <div className="h-20 rounded-lg bg-gray-700 w-full mb-4"></div>
                         </div>
                     )}
 
